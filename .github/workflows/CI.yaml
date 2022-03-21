@@ -26,10 +26,17 @@ jobs:
 
       - name: Install Keptn
         id: install_keptn
-        uses: keptn-sandbox/action-install-keptn/.github/actions/install@main
+        uses: keptn-sandbox/action-install-keptn@main
         with:
           KEPTN_VERSION: "0.13.1"
           KUBECONFIG: /etc/rancher/k3s/k3s.yaml
 
       - name: Connect to keptn
         run: echo "connect to ${{ steps.install_keptn.outputs.KEPTN_ENDPOINT }} - ${{ steps.install_keptn.outputs.KEPTN_API_TOKEN }}"
+
+      - name: Uninstall Keptn
+        uses: keptn-sandbox/action-install-keptn@main
+        with:
+          UNINSTALL: true
+          KEPTN_VERSION: "0.13.1"
+          KUBECONFIG: /etc/rancher/k3s/k3s.yaml
