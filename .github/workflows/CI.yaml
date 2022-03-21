@@ -24,6 +24,11 @@ jobs:
       - name: Install and start K3s
         run: curl -sfL https://get.k3s.io | sh -
 
+      - name: Set kubeconfig
+        env:
+          KUBECONFIG: /etc/rancher/k3s/k3s.yaml
+        run: sudo mkdir ~/.kube && sudo cp ${KUBECONFIG} ~/.kube/config
+
       - name: Install Keptn
         id: install_keptn
         uses: keptn-sandbox/action-install-keptn/.github/actions/install@main
