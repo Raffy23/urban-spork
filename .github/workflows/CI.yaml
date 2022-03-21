@@ -22,21 +22,14 @@ jobs:
         uses: actions/checkout@v2.4.0
 
       - name: Install and start K3s
-        run: curl -sfL https://get.k3s.io | sh -
-
-      - name: Set kubeconfig
-        env:
-          KUBECONFIG: /etc/rancher/k3s/k3s.yaml
-        run: sudo mkdir ~/.kube && sudo cp ${KUBECONFIG} ~/.kube/config && sudo chmod o+r ~/.kube/config
-
-      - name: Check kubeconfig
-        run: kubectl config current-context
+        run: curl -sfL https://get.k3s.io | sh - --write-kubeconfig-mode 644
 
       - name: Install Keptn
         id: install_keptn
         uses: keptn-sandbox/action-install-keptn/.github/actions/install@main
         with:
           KEPTN_VERSION: "0.13.1"
+          KUBECONFIG: /etc/rancher/k3s/k3s.yaml
 
       - name: Connect to keptn
         run: echo "connect to ${{ steps.install_keptn.outputs.KEPTN_ENDPOINT }} - ${{ steps.install_keptn.outputs.KEPTN_API_TOKEN }}"
