@@ -29,6 +29,9 @@ jobs:
           KUBECONFIG: /etc/rancher/k3s/k3s.yaml
         run: sudo mkdir ~/.kube && sudo cp ${KUBECONFIG} ~/.kube/config
 
+      - name: Check kubeconfig
+        run: kubectl config current-context
+
       - name: Install Keptn
         id: install_keptn
         uses: keptn-sandbox/action-install-keptn/.github/actions/install@main
