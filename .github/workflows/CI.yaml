@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v2.4.0
 
       - name: Install and start K3s
-        run: curl -sfL https://get.k3s.io | sh - --write-kubeconfig-mode 644
+        run: curl -sfL https://get.k3s.io | K3S_KUBECONFIG_MODE="644" sh -
 
       - name: Install Keptn
         id: install_keptn
