@@ -27,7 +27,6 @@ jobs:
       DATE: ${{ steps.get_datetime.outputs.DATE }}
       TIME: ${{ steps.get_datetime.outputs.TIME }}
       DATETIME: ${{ steps.get_datetime.outputs.DATETIME }}
-
     steps:
       - name: Check out code
         uses: actions/checkout@v2.4.0
