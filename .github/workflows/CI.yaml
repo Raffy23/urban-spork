@@ -1,0 +1,45 @@
+name: CI
+on:
+  push:
+    branches:
+      - 'master'
+      - 'main'
+      - 'release-*'
+  pull_request:
+    branches:
+      - 'master'
+      - 'main'
+      - 'release-*'
+defaults:
+  run:
+    shell: bash
+jobs:
+  prepare_ci_run:
+    name: Prepare CI Run
+    runs-on: ubuntu-20.04
+    outputs: # declare what this job outputs (so it can be re-used for other jobs)
+      # build config
+      # metadata
+      GIT_SHA: ${{ steps.extract_branch.outputs.GIT_SHA }}
+      BRANCH: ${{ steps.extract_branch.outputs.BRANCH }}
+      BRANCH_SLUG: ${{ steps.extract_branch.outputs.BRANCH_SLUG }}
+      VERSION: ${{ steps.get_version.outputs.VERSION }}
+      DATE: ${{ steps.get_datetime.outputs.DATE }}
+      TIME: ${{ steps.get_datetime.outputs.TIME }}
+      DATETIME: ${{ steps.get_datetime.outputs.DATETIME }}
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2.4.0
+
+      - name: Install and start K3s
+        run: curl -sfL https://get.k3s.io | sh -
+
+       - name: Install Keptn
+        id: install_keptn
+        uses: keptn-sandbox/action-install-keptn/.github/actions/install@v1
+        with:
+          KEPTN_VERSION: "0.13.1"
+
+      - name: Connect to keptn
+        run: echo "connect to ${{ steps.install_keptn.KEPTN_ENDPOINT }} - ${{ steps.install_keptn KEPTN_API_TOKEN }}"
