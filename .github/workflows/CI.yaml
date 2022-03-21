@@ -15,7 +15,7 @@ defaults:
     shell: bash
 jobs:
   prepare_ci_run:
-    name: Prepare CI Run
+    name: Test Keptn install
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
