@@ -27,7 +27,7 @@ jobs:
       - name: Set kubeconfig
         env:
           KUBECONFIG: /etc/rancher/k3s/k3s.yaml
-        run: sudo mkdir ~/.kube && sudo cp ${KUBECONFIG} ~/.kube/config
+        run: sudo mkdir ~/.kube && sudo cp ${KUBECONFIG} ~/.kube/config && sudo chmod o+r ~/.kube/config
 
       - name: Check kubeconfig
         run: kubectl config current-context
