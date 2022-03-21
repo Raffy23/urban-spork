@@ -31,4 +31,4 @@ jobs:
           KEPTN_VERSION: "0.13.1"
 
       - name: Connect to keptn
-        run: echo "connect to ${{ steps.install_keptn.KEPTN_ENDPOINT }} - ${{ steps.install_keptn KEPTN_API_TOKEN }}"
+        run: echo "connect to ${{ steps.install_keptn.outputs.KEPTN_ENDPOINT }} - ${{ steps.install_keptn.outputs.KEPTN_API_TOKEN }}"
