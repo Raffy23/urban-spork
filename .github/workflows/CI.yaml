@@ -42,14 +42,10 @@ jobs:
           repository: keptn-contrib/job-executor-service
           path: job-executor-service
 
-      - name: Build keptn-contrib/job-executor-service
+      - name: Build & run keptn-contrib/job-executor-service
         working-directory: ./job-executor-service
-        run: skaffold build
+        run: skaffold dev &
 
-      - name: Run keptn-contrib/job-executor-service
-        working-directory: ./job-executor-service
-        run: skaffold deploy
-    
       - name: Uninstall Keptn
         uses: keptn-sandbox/action-install-keptn@main
         with:
