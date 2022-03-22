@@ -28,20 +28,32 @@ jobs:
           KEPTN_VERSION: "0.13.1"
           KUBECONFIG: /etc/rancher/k3s/k3s.yaml
 
-      #- name: Connect to keptn
-      #  run: echo "connect to ${{ steps.install_keptn.outputs.KEPTN_ENDPOINT }} - ${{ steps.install_keptn.outputs.KEPTN_API_TOKEN }}"
-
       - name: Test connection to keptn
         run: |
           curl -X GET "${{ steps.install_keptn.outputs.KEPTN_ENDPOINT }}/v1/metadata" -H  "accept: application/json" -H  "x-token: ${{ steps.install_keptn.outputs.KEPTN_API_TOKEN }}"
 
-      - name: Install skaffold
-        run: |
-          curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
-          sudo install skaffold /usr/local/bin/
+      - name: Install Helm 
+        run: curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
-      - name: Foo
-        run: echo bar
+      - name: Checkout keptn-contrib/job-executor-service
+        uses: actions/checkout@v2.4.0
+        with:
+          repository: keptn-contrib/job-executor-service
+          path: job-executor-service
+        
+      - name: Build helm chart
+        shell: bash
+        working-directory: job-executor-service
+        run: gh-actions-scripts/build_helm_chart.sh 0.1.7 0.1.7 job-executor-service
+
+      - name: Install helm chart
+        shell: bash
+        working-directory: job-executor-service
+        run: helm upgrade --install -n keptn job-executor-service installer/job-executor-service-0.1.7.tgz
+
+      - name: Remove helm chart
+        shell: bash
+        run: helm uninstall -n keptn job-executor-service
 
       - name: Uninstall Keptn
         uses: keptn-sandbox/action-install-keptn@main
