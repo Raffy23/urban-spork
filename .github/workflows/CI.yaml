@@ -38,6 +38,7 @@ jobs:
 
       - name: Checkout keptn-contrib/job-executor-service
         uses: actions/checkout@v2.4.0
+        with:
           repository: keptn-contrib/job-executor-service
           path: job-executor-service
 
