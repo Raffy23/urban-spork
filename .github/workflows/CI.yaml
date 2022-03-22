@@ -14,13 +14,10 @@ defaults:
   run:
     shell: bash
 jobs:
-  prepare_ci_run:
+  test_keptn_install:
     name: Test Keptn install
     runs-on: ubuntu-latest
     steps:
-      - name: Check out code
-        uses: actions/checkout@v2.4.0
-
       - name: Install and start K3s
         run: curl -sfL https://get.k3s.io | K3S_KUBECONFIG_MODE="644" sh -
 
@@ -34,6 +31,24 @@ jobs:
       - name: Connect to keptn
         run: echo "connect to ${{ steps.install_keptn.outputs.KEPTN_ENDPOINT }} - ${{ steps.install_keptn.outputs.KEPTN_API_TOKEN }}"
 
+      - name: Install skaffold
+        run: |
+          curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
+          sudo install skaffold /usr/local/bin/
+
+      - name: Checkout keptn-contrib/job-executor-service
+        uses: actions/checkout@v2.4.0
+          repository: keptn-contrib/job-executor-service
+          path: job-executor-service
+
+      - name: Build keptn-contrib/job-executor-service
+        working-directory: ./job-executor-service
+        run: skaffold build
+
+      - name: Run keptn-contrib/job-executor-service
+        working-directory: ./job-executor-service
+        run: skaffold deploy
+    
       - name: Uninstall Keptn
         uses: keptn-sandbox/action-install-keptn@main
         with:
