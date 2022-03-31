@@ -30,7 +30,7 @@ jobs:
             this is the last line
         run: |
           echo env.TEST
-          tags=$(echo '${{ env.TEST }}' | tr '[:upper:]' '[:lower:]')"
+          tags=$(echo '${{ env.TEST }}' | tr '[:upper:]' '[:lower:]')
           tags="${tags//'%'/'%25'}"
           tags="${tags//$'\n'/'%0A'}"
           tags="${tags//$'\r'/'%0D'}"
