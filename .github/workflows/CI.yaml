@@ -18,15 +18,19 @@ jobs:
     name: Test GH Actions with multiline strings
     runs-on: ubuntu-latest
     steps:
-      - name: Before
-        run: |
-          str="this is a string\n-and another one\n-and another one\n-and the final one"
-          echo -e TEST=\"$str\" >> $GITHUB_ENV
-
       - name: Normalize TAGS
         shell: bash
         id: normalize_tags
-        run: echo "::set-output name=tags::$(echo '${{ env.TEST }}' | tr '[:upper:]' '[:lower:]')"
+        env:
+          TEST: |
+            this is the first line
+            Line 01
+            Line 03
+            Line 02
+            this is the last line
+        run: |
+          echo env.TEST
+          echo "::set-output name=tags::$(echo '${{ env.TEST }}' | tr '[:upper:]' '[:lower:]')"
 
       - name: After
         run: echo Tags='${{ steps.normalize_tags.outputs.tags }}'
