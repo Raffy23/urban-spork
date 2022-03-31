@@ -30,7 +30,12 @@ jobs:
             this is the last line
         run: |
           echo env.TEST
-          echo "::set-output name=tags::$(echo '${{ env.TEST }}' | tr '[:upper:]' '[:lower:]')"
+          tags=$(echo '${{ inputs.TAGS }}' | tr '[:upper:]' '[:lower:]')"
+          tags="${tags//'%'/'%25'}"
+          tags="${tags//$'\n'/'%0A'}"
+          tags="${tags//$'\r'/'%0D'}"
+
+          echo "::set-output name=tags::$tags"
 
       - name: After
         run: echo Tags='${{ steps.normalize_tags.outputs.tags }}'
