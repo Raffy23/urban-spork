@@ -14,6 +14,23 @@ defaults:
   run:
     shell: bash
 jobs:
+  test_gh_multiline_strings:
+    name: Test GH Actions with multiline strings
+    runs-on: ubuntu-latest
+    steps:
+      - name: Before
+        run: |
+          str="this is a string\n-and another one\n-and another one\n-and the final one"
+          echo -e "TEST=$str" >> $GITHUB_ENV
+
+      - name: Normalize TAGS
+        shell: bash
+        id: normalize_tags
+        run: echo "::set-output name=tags::$(echo '${{ env.TEST }}' | tr '[:upper:]' '[:lower:]')"
+
+      - name: After
+        run: echo Tags='${{ steps.normalize_tags.outputs.tags }}'
+
   test_keptn_install:
     name: Test Keptn install
     runs-on: ubuntu-latest
