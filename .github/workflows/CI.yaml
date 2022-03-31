@@ -21,7 +21,7 @@ jobs:
       - name: Before
         run: |
           str="this is a string\n-and another one\n-and another one\n-and the final one"
-          echo -e "TEST=$str" >> $GITHUB_ENV
+          echo -e TEST="$str" >> $GITHUB_ENV
 
       - name: Normalize TAGS
         shell: bash
